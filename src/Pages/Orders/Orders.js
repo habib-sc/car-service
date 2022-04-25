@@ -14,7 +14,7 @@ const Orders = () => {
         
         const getOrders = async() => {
             const email = user?.email;
-            const url = `http://localhost:5000/orders?email=${email}`;
+            const url = `https://sleepy-lowlands-70836.herokuapp.com/orders?email=${email}`;
             try{
                 await axiosPrivate.get(url)
                 .then(res => setOrders(res.data));

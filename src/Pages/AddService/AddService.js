@@ -5,7 +5,7 @@ const AddService = () => {
     const { register, handleSubmit } = useForm();
 
     const onSubmit = data => {
-        const url = `http://localhost:5000/service/add`;
+        const url = `https://sleepy-lowlands-70836.herokuapp.com/service/add`;
 
         fetch(url, {
             method: 'POST',
