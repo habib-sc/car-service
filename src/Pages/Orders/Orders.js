@@ -8,10 +8,15 @@ const Orders = () => {
     const [user] = useAuthState(auth);
 
     useEffect( () => {
-        const email = user?.email;
-        const url = `http://localhost:5000/orders?email=${email}`;
+        
         const getOrders = async() => {
-            await axios.get(url)
+            const email = user?.email;
+            const url = `http://localhost:5000/orders?email=${email}`;
+            await axios.get(url, {
+                headers: {
+                    authorization: `Bearer ${localStorage.getItem('accessToken')}`
+                }
+            })
             .then(res => setOrders(res.data));
         }
         getOrders();
