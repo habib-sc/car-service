@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -6,6 +5,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import auth from '../../../firebase.init';
+import useToken from '../../../hooks/useToken';
 import Loading from '../../Shared/Loading/Loading';
 import PageTitle from '../../Shared/PageTitle/PageTitle';
 import SocialLogin from '../SocialLogin/SocialLogin';
@@ -26,6 +26,7 @@ const Login = () => {
     ] = useSignInWithEmailAndPassword(auth);
 
     const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
+    const [token] = useToken(user);
 
     if (loading || sending) {
         return <Loading></Loading>
@@ -39,13 +40,12 @@ const Login = () => {
         event.preventDefault();
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
-
         await signInWithEmailAndPassword(email, password);
-        const {data} = await axios.post('https://sleepy-lowlands-70836.herokuapp.com/login', {email});
-        localStorage.setItem('accessToken', data.accessToken);
-
-        navigate(from, { replace: true });
     }
+
+    if (token) {
+        navigate(from, { replace: true });
+    };
 
     const navigateRegister = event => {
         navigate('/register');
